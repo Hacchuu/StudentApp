@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_attendance"
+            android:icon="@drawable/ic_attendance_24dp"
+            android:title="Attendance Register" />
+        <item
+            android:id="@+id/nav_clock"
+            android:icon="@drawable/ic_clock"
+            android:title="Exam Coundown"/>
+        <item
+            android:id="@+id/nav_assignment"
+            android:icon="@drawable/ic_assignments"
+            android:title="Tasks And Assignments"/>
+        <item
+            android:id="@+id/nav_calculator"
+            android:icon="@drawable/ic_calculator"
+            android:title="CGPA Calculator"/>
+        <item
+            android:id="@+id/nav_marks"
+            android:icon="@drawable/ic_exam"
+            android:title="Marks Tracker"/>
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_rate"
+                android:icon="@drawable/ic_rate_24dp"
+                android:title="Rate Us"/>
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>
