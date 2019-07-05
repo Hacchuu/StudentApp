@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    AttendanceTarget attendanceTarget = new AttendanceTarget();
+    public int min;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

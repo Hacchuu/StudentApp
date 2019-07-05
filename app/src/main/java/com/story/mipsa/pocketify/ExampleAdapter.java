@@ -1,15 +1,12 @@
 package com.story.mipsa.pocketify;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -30,15 +27,25 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.exampleV
     public static class exampleViewHolder extends RecyclerView.ViewHolder{
         public TextView subjectName,Attendance,Status,Percentage;
         public TextView optionDigit;
+        public Button present,absent;
+        AttendanceFragment attendanceFragment = new AttendanceFragment();
+        public int presentS,presentTemp=0;
+        public int absentS,total,totalS,attend=0,bunk=0, min,per;
+        public float avg=0,temp;
+
 
         //Initializing each object
         public exampleViewHolder(View itemView) {
             super(itemView);
+            present = itemView.findViewById(R.id.item_present);
+            absent = itemView.findViewById(R.id.item_absent);
             subjectName = itemView.findViewById(R.id.SubName);
             Attendance = itemView.findViewById(R.id.item_number);
             Status = itemView.findViewById(R.id.item_displayStatus);
             Percentage = itemView.findViewById(R.id.item_displayPercentage);
             optionDigit = itemView.findViewById(R.id.txtOptionDigit);
+            String target = attendanceFragment.target;
+            min = Integer.parseInt(target);
         }
     }
 
@@ -57,16 +64,15 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.exampleV
 
     @Override
     public void onBindViewHolder(final ExampleAdapter.exampleViewHolder holder, final int position) {
+        final itemExample currentItem = ExampleArrayList.get(position);
+
         //Setting the datavalues for the card view
-        itemExample currentItem = ExampleArrayList.get(position);
         holder.subjectName.setText(currentItem.getSubjectName());
         holder.Attendance.setText(currentItem.getPresent()+"/"+currentItem.getTotal());
-        holder.Percentage.setText(currentItem.getPercentage()+"%");
-        holder.Status.setText("You can bunk the next "+currentItem.getPresent()+" classes.");
+        holder.Percentage.setText(String.format("%.1f%%",currentItem.getPercentage()));
         holder.optionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //Popup menu for options in each card view
                 PopupMenu popupMenu = new PopupMenu(mContext,holder.optionDigit);
                 popupMenu.inflate(R.menu.optional_menu);
@@ -120,12 +126,115 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.exampleV
             }
         });
 
+        holder.present.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Present( currentItem, holder);
+            }
+        });
 
+        holder.absent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Absent( currentItem, holder);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return ExampleArrayList.size();
     }
+
+    public void Absent(itemExample currentItem, ExampleAdapter.exampleViewHolder holder){
+        holder.absentS = currentItem.getAbsent();
+        holder.total = currentItem.getTotal();
+        holder.absentS++;
+        holder.total++;
+        float avg = ((float)holder.presentS/(float)holder.total)*100;
+        currentItem.setPercentage(avg);
+        currentItem.setTotal(holder.total);
+        currentItem.setAbsent(holder.absentS);
+        holder.Attendance.setText(currentItem.getPresent()+"/"+currentItem.getTotal());
+        holder.Percentage.setText(String.format("%.1f%%",currentItem.getPercentage()));
+        Calculate(currentItem,holder);
+        if(holder.attend>0){
+            if(holder.attend>1)
+                holder.Status.setText("You can't bunk the next "+holder.attend+" classes ⚆_⚆");
+            else
+                holder.Status.setText("You can't bunk the next class ◉_◉");
+        }
+        else if(holder.bunk>0){
+            if(holder.bunk>1)
+                holder.Status.setText("You can bunk "+holder.bunk+" classes ♥‿♥");
+            else
+                holder.Status.setText("You can bunk your next class (ᵔᴥᵔ)");
+        }
+
+    }
+
+    public void Present(itemExample currentItem, ExampleAdapter.exampleViewHolder holder){
+        holder.presentS = currentItem.getPresent();
+        holder.total = currentItem.getTotal();
+        holder.presentS++;
+        holder.total++;
+        float avg = ((float)holder.presentS/(float)holder.total)*100;
+        currentItem.setPercentage(avg);
+        currentItem.setTotal(holder.total);
+        currentItem.setPresent(holder.presentS);
+        holder.Attendance.setText(currentItem.getPresent()+"/"+currentItem.getTotal());
+        holder.Percentage.setText(String.format("%.1f%%",currentItem.getPercentage()));
+        Calculate(currentItem,holder);
+        if(holder.attend>0){
+            if(holder.attend>1)
+                holder.Status.setText("You can't bunk the next "+holder.attend+" classes ⚆_⚆");
+            else
+                holder.Status.setText("You can't bunk the next class ◉_◉");
+        }
+        else if(holder.bunk>0){
+            if(holder.bunk>1)
+                holder.Status.setText("You can bunk "+holder.bunk+" classes ♥‿♥");
+            else
+                holder.Status.setText("You can bunk your next class (ᵔᴥᵔ)");
+            }
+        }
+
+    public void Calculate(itemExample currentItem, ExampleAdapter.exampleViewHolder holder){
+        holder.absentS = currentItem.getAbsent();
+        holder.presentS = currentItem.getPresent();
+        holder.total = currentItem.getTotal();
+        holder.totalS = holder.total;
+        holder.attend = 0;
+        holder.bunk = 0;
+        if(holder.totalS != 0){
+            holder.avg = ((float)holder.presentS/(float)holder.totalS)*100;
+        }
+        holder.temp = holder.avg;
+        if(holder.temp >= holder.min) {
+            do {
+                holder.totalS += 1;
+                holder.temp = ((float) holder.presentS / (float) holder.totalS) * 100;
+                if (holder.temp < holder.min && holder.bunk == 0) {
+                    holder.attend++;
+                } else if (holder.temp >= holder.min && holder.attend == 0)
+                    holder.bunk++;
+            } while (holder.temp > holder.min);
+        }
+        else{
+            holder.presentTemp = holder.presentS;
+            do {
+                holder.totalS += 1;
+                holder.presentTemp+=1;
+                holder.temp = ((float) holder.presentTemp / (float) holder.totalS) * 100;
+                if (holder.temp <= holder.min && holder.bunk == 0) {
+                    holder.attend++;
+                } else if (holder.temp > holder.min && holder.attend == 0)
+                    holder.bunk++;
+            } while (holder.temp <= holder.min);
+        }
+        currentItem.setAttend(holder.attend);
+        currentItem.setBunk(holder.bunk);
+    }
+
 }
 

@@ -29,13 +29,6 @@ public class FirstPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
-        if(savedInstanceState!=null) {
-            savedName = savedInstanceState.getString("Name");
-            Intent intent = new Intent(getApplicationContext(),AttendanceTarget.class);
-            intent.putExtra("name", savedName);
-            startActivity(intent);
-        }
-
         editText = (EditText)findViewById(R.id.Name);
         button = (Button)findViewById(R.id.next);
 

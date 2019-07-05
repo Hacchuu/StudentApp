@@ -33,14 +33,15 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
 
     FirstPage firstPage;
     AttendanceTarget attendanceTarget;
+    //CGPAFragment cgpaFragment;
     public String name;
-    public String target;
+    public static String target;
     View myInflatedView;
     public TextView textView,textView2;
     private Button insertButton;
-    public  ArrayList<itemExample> exampleArrayList;
+    public  static ArrayList<itemExample> exampleArrayList = new ArrayList<>();
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter mAdapter = new ExampleAdapter(exampleArrayList,getActivity());
     private RecyclerView.LayoutManager mLayoutManager;
 
     public AttendanceFragment() {
@@ -54,6 +55,7 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
 
         myInflatedView = inflater.inflate(R.layout.fragment_attendance, container,false);
 
+
         name = firstPage.name;
         target = attendanceTarget.minimumAttendance;
         textView = myInflatedView.findViewById(R.id.nameFill);
@@ -61,7 +63,7 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
         textView2 = myInflatedView.findViewById(R.id.TargetFill);
         textView2.setText(target+"%");
         insertButton = myInflatedView.findViewById(R.id.addSubject);
-        createExampleList();
+        //createExampleList();
         buildRecyclerView();
 
         insertButton.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +86,14 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
     }
 
     public void insertItem(String inputSubject,int position){
-        exampleArrayList.add(position,new itemExample(inputSubject,0,0,0,0));
+        exampleArrayList.add(position,new itemExample(inputSubject,0,0,0,0,0,0));
         //mAdapter.notifyItemInserted(exampleArrayList.size()-1);
         mAdapter.notifyDataSetChanged();
     }
 
-    public void createExampleList(){
-        exampleArrayList = new ArrayList<>();
-    }
+//    public void createExampleList(){
+//        exampleArrayList = new ArrayList<>();
+//    }
 
     public void buildRecyclerView(){
         mRecyclerView = myInflatedView.findViewById(R.id.recyclerView);
@@ -104,9 +106,13 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
 
     @Override
     public void sendInput(String input) {
-        if(exampleArrayList.size()==0)
+        CGPAFragment.getSub(input);
+        if(exampleArrayList.size()==0){
             insertItem(input,0);
-        else
-            insertItem(input,exampleArrayList.size());
+        }
+        else {
+            insertItem(input, exampleArrayList.size());
+
+        }
     }
 }
