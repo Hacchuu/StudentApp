@@ -1,6 +1,8 @@
 package com.story.mipsa.pocketify;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +16,10 @@ import android.widget.Toast;
 
 public class AttendanceTarget extends AppCompatActivity{
 
+    SharedPreferences sharedPreferences;
     public static String minimumAttendance;
+    public static final String savedTarget = "targetKey";
+    public static final String mypreference = "mypref";
     SeekBar seekBar;
     Button button;
     TextView textView;
@@ -22,14 +27,20 @@ public class AttendanceTarget extends AppCompatActivity{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putString("Minimum Attendance",minimumAttendance);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        minimumAttendance = (String) savedInstanceState.getSerializable( "Minimum Attendance");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance_target);
+        sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
 
         if(savedInstanceState!=null) {
             minimumAttendance = savedInstanceState.getString("Minimum Attendance");
@@ -62,6 +73,10 @@ public class AttendanceTarget extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(savedTarget, minimumAttendance);
+                editor.commit();
+
                 Toast message = Toast.makeText(getApplicationContext(),"Minimum Attendance set to "+minimumAttendance+"%",Toast.LENGTH_SHORT);
                 View toastView = message.getView();
                 toastView.setBackgroundResource(R.drawable.toast_color);
@@ -73,7 +88,23 @@ public class AttendanceTarget extends AppCompatActivity{
             }
         });
 
+        if(sharedPreferences.contains(savedTarget)){
+            minimumAttendance = sharedPreferences.getString(savedTarget,"");
+            textView.setText(minimumAttendance+"%");
+//            Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+//            startActivity(intent);
+        }
 
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
 
+        if (isFirstRun) {
+            //show start activity
+
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                    .putBoolean("isFirstRun", false).commit();
     }
+}
 }

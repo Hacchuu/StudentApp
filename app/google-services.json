@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "394302588170",
+    "firebase_url": "https://pocketify-77b47.firebaseio.com",
+    "project_id": "pocketify-77b47",
+    "storage_bucket": "pocketify-77b47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394302588170:android:b265ea5feb7b0d86",
+        "android_client_info": {
+          "package_name": "com.story.mipsa.pocketify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394302588170-vdg6ophmpm5n8lhk924jdk0pl3jdksip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.story.mipsa.pocketify",
+            "certificate_hash": "330567ec553a6e9b48d6a2d7e5e188c6f10a753a"
+          }
+        },
+        {
+          "client_id": "394302588170-frdhj5hiij7gmpmaqe8ilvtilibjsri9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwJR7rTkg0L1JU9KKOHJh3dTI02otnuMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394302588170-frdhj5hiij7gmpmaqe8ilvtilibjsri9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

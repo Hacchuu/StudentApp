@@ -26,7 +26,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.exampleV
 
     public static class exampleViewHolder extends RecyclerView.ViewHolder{
         public TextView subjectName,Attendance,Status,Percentage;
-        public TextView optionDigit;
+        TextView optionDigit;
         public Button present,absent;
         AttendanceFragment attendanceFragment = new AttendanceFragment();
         public int presentS,presentTemp=0;
@@ -70,6 +70,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.exampleV
         holder.subjectName.setText(currentItem.getSubjectName());
         holder.Attendance.setText(currentItem.getPresent()+"/"+currentItem.getTotal());
         holder.Percentage.setText(String.format("%.1f%%",currentItem.getPercentage()));
+        holder.Status.setText("Situation");
         holder.optionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,7 +196,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.exampleV
             if(holder.bunk>1)
                 holder.Status.setText("You can bunk "+holder.bunk+" classes ♥‿♥");
             else
-                holder.Status.setText("You can bunk your next class (ᵔᴥᵔ)");
+                holder.Status.setText("You can bunk 1 class (ᵔᴥᵔ)");
             }
         }
 

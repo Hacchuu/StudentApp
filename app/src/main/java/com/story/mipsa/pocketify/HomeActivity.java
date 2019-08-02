@@ -90,19 +90,11 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flHome,new AssignmentFragment());
             ft.commit();
-        } else if (id == R.id.nav_clock) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flHome,new ExamFragment());
-            ft.commit();
         } else if (id == R.id.nav_calculator) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flHome,new CGPAFragment());
             ft.commit();
-        } else if (id == R.id.nav_marks) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flHome,new MarksFragment());
-            ft.commit();
-        } else if (id == R.id.nav_send) {
+        }  else if (id == R.id.nav_send) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flHome,new SendFragment());
             ft.commit();

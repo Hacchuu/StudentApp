@@ -1,10 +1,16 @@
 package com.story.mipsa.pocketify;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,6 +21,12 @@ import java.util.ArrayList;
 public class cgpaAdapter extends RecyclerView.Adapter<cgpaAdapter.cgpaViewHolder> {
 
     private ArrayList<cgpaItem> mCgpaItems;
+    private FragmentActivity mContext;
+
+    public cgpaAdapter(ArrayList<cgpaItem> cgpaItems, FragmentActivity context){
+        mCgpaItems = cgpaItems;
+        mContext = context;
+    }
 
     public static class cgpaViewHolder extends RecyclerView.ViewHolder{
 
@@ -28,12 +40,6 @@ public class cgpaAdapter extends RecyclerView.Adapter<cgpaAdapter.cgpaViewHolder
         }
     }
 
-    public cgpaAdapter(ArrayList<cgpaItem> cgpaItems){
-        mCgpaItems = cgpaItems;
-
-    }
-
-
 
     @Override
     public cgpaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,15 +49,12 @@ public class cgpaAdapter extends RecyclerView.Adapter<cgpaAdapter.cgpaViewHolder
     }
 
     @Override
-    public void onBindViewHolder(cgpaViewHolder holder, int position) {
+    public void onBindViewHolder(final cgpaViewHolder holder, final int position) {
 
         cgpaItem currentItem = mCgpaItems.get(position);
         holder.cgpaSubName.setText(currentItem.getCgpaSubName());
         holder.credit.setText(currentItem.getSubCredit());
         holder.grade.setText(currentItem.getSubGrade());
-
-
-
     }
 
     @Override

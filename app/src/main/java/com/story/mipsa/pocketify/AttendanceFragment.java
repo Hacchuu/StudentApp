@@ -1,6 +1,8 @@
 package com.story.mipsa.pocketify;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,17 +33,19 @@ import java.util.ArrayList;
  */
 public class AttendanceFragment extends Fragment implements subjectDialog.onInput{
 
+//    SharedPreferences sharedPreferences;
+//    public static final String mypreference = "mypref";
     FirstPage firstPage;
     AttendanceTarget attendanceTarget;
-    //CGPAFragment cgpaFragment;
+    CGPAFragment cgpaFragment = new CGPAFragment();
     public String name;
     public static String target;
     View myInflatedView;
     public TextView textView,textView2;
     private Button insertButton;
-    public  static ArrayList<itemExample> exampleArrayList = new ArrayList<>();
+    public static ArrayList<itemExample> exampleArrayList = new ArrayList<>();
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter = new ExampleAdapter(exampleArrayList,getActivity());
+    private RecyclerView.Adapter mAdapter = new ExampleAdapter(exampleArrayList, getActivity());
     private RecyclerView.LayoutManager mLayoutManager;
 
     public AttendanceFragment() {
@@ -54,6 +58,9 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
                              Bundle savedInstanceState) {
 
         myInflatedView = inflater.inflate(R.layout.fragment_attendance, container,false);
+
+        //sharedPreferences = this.getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+
 
 
         name = firstPage.name;
@@ -87,13 +94,8 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
 
     public void insertItem(String inputSubject,int position){
         exampleArrayList.add(position,new itemExample(inputSubject,0,0,0,0,0,0));
-        //mAdapter.notifyItemInserted(exampleArrayList.size()-1);
         mAdapter.notifyDataSetChanged();
     }
-
-//    public void createExampleList(){
-//        exampleArrayList = new ArrayList<>();
-//    }
 
     public void buildRecyclerView(){
         mRecyclerView = myInflatedView.findViewById(R.id.recyclerView);
@@ -106,13 +108,12 @@ public class AttendanceFragment extends Fragment implements subjectDialog.onInpu
 
     @Override
     public void sendInput(String input) {
-        CGPAFragment.getSub(input);
         if(exampleArrayList.size()==0){
             insertItem(input,0);
         }
         else {
             insertItem(input, exampleArrayList.size());
-
         }
+        cgpaFragment.getSub(input);
     }
 }
